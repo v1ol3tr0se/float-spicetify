@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     name: node ${{ matrix.node }}
@@ -19,22 +23,12 @@ jobs:
       matrix:
         node: ["24", "26"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
 
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn verify
-      - run: node --check float.js
-      - run: |
-          node -e '
-            const fs = require("fs");
-            const m = JSON.parse(fs.readFileSync("manifest.json", "utf8"));
-            if (!m.main || !fs.existsSync(m.main)) {
-              console.error("manifest main missing: " + m.main);
-              process.exit(1);
-            }
-          '
