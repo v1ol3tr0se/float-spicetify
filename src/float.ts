@@ -1,8 +1,10 @@
+(function float(): void {
+	if (!document.head) {
+		setTimeout(float, 100);
+		return;
+	}
 
-(function float() {
-	if (!document.head) return setTimeout(float, 100);
-
-	const CSS = `
+	const CSS: string = `
 @property --float-members-width {
   syntax: "<length>";
   inherits: true;
@@ -315,7 +317,7 @@ body:not(.fsd-activated) {
 }
 `;
 
-	let style = document.getElementById("float-spicetify");
+	let style: HTMLElement | null = document.getElementById("float-spicetify");
 	if (!style) {
 		style = document.createElement("style");
 		style.id = "float-spicetify";

@@ -1,6 +1,8 @@
-
 (function float() {
-	if (!document.head) return setTimeout(float, 100);
+	if (!document.head) {
+		setTimeout(float, 100);
+		return;
+	}
 
 	const CSS = `
 @property --float-members-width {
